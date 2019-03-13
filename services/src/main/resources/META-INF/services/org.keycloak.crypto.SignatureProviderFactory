@@ -7,3 +7,5 @@ org.keycloak.crypto.HS512SignatureProviderFactory
 org.keycloak.crypto.ES256SignatureProviderFactory
 org.keycloak.crypto.ES384SignatureProviderFactory
 org.keycloak.crypto.ES512SignatureProviderFactory
+org.keycloak.crypto.GOST256SignatureProviderFactory
+org.keycloak.crypto.GOST512SignatureProviderFactory

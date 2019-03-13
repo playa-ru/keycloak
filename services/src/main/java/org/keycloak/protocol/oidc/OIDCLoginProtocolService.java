@@ -201,10 +201,19 @@ public class OIDCLoginProtocolService {
         for (KeyWrapper k : session.keys().getKeys(realm)) {
             if (k.getStatus().isEnabled() && k.getUse().equals(KeyUse.SIG) && k.getVerifyKey() != null) {
                 JWKBuilder b = JWKBuilder.create().kid(k.getKid()).algorithm(k.getAlgorithm());
-                if (k.getType().equals(KeyType.RSA)) {
-                    keys.add(b.rsa(k.getVerifyKey()));
-                } else if (k.getType().equals(KeyType.EC)) {
-                    keys.add(b.ec(k.getVerifyKey()));
+                switch (k.getType()) {
+                    case KeyType.RSA:
+                        keys.add(b.rsa(k.getVerifyKey()));
+                        break;
+                    case KeyType.EC:
+                        keys.add(b.ec(k.getVerifyKey()));
+                        break;
+                    case "GOST3411_2012_256":
+                    case "GOST3411_2012_512":
+                    case KeyType.GOST3411_2012_256withGOST3410_2012_256:
+                    case KeyType.GOST3411_2012_512withGOST3410_2012_512:
+                        keys.add(b.gost(k.getVerifyKey()));
+                        break;
                 }
             }
         }

@@ -17,16 +17,17 @@
 
 package org.keycloak.jose.jws;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.PrivateKey;
+
+import javax.crypto.SecretKey;
+
 import org.keycloak.common.util.Base64Url;
 import org.keycloak.crypto.SignatureSignerContext;
 import org.keycloak.jose.jws.crypto.HMACProvider;
 import org.keycloak.jose.jws.crypto.RSAProvider;
 import org.keycloak.util.JsonSerialization;
-
-import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.PrivateKey;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>

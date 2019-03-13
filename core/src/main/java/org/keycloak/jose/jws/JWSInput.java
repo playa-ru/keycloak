@@ -17,11 +17,11 @@
 
 package org.keycloak.jose.jws;
 
-import org.keycloak.common.util.Base64Url;
-import org.keycloak.util.JsonSerialization;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import org.keycloak.common.util.Base64Url;
+import org.keycloak.util.JsonSerialization;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>

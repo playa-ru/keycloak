@@ -18,12 +18,6 @@
 package org.keycloak.jose.jwk;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.bouncycastle.jce.spec.ECNamedCurveSpec;
-import org.keycloak.common.util.Base64Url;
-import org.keycloak.crypto.KeyType;
-import org.keycloak.util.JsonSerialization;
 
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -31,12 +25,23 @@ import java.security.PublicKey;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
+import org.bouncycastle.jce.spec.ECNamedCurveSpec;
+import org.keycloak.common.util.Base64Url;
+import org.keycloak.crypto.KeyType;
+import org.keycloak.util.JsonSerialization;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
  */
 public class JWKParser {
+    protected static final Logger LOGGER = Logger.getLogger(JWKParser.class.getName());
 
     private static TypeReference<Map<String,String>> typeRef = new TypeReference<Map<String,String>>() {};
 
@@ -72,13 +77,21 @@ public class JWKParser {
 
     public PublicKey toPublicKey() {
         String keyType = jwk.getKeyType();
-        if (keyType.equals(KeyType.RSA)) {
-            return createRSAPublicKey();
-        } else if (keyType.equals(KeyType.EC)) {
-            return createECPublicKey();
 
-        } else {
-            throw new RuntimeException("Unsupported keyType " + keyType);
+        LOGGER.info("Key Type: " + keyType);
+
+        switch (keyType) {
+            case KeyType.RSA:
+                return createRSAPublicKey();
+            case KeyType.EC:
+                return createECPublicKey();
+            case KeyType.GOST3411_2012_256withGOST3410_2012_256:
+            case KeyType.GOST3411_2012_512withGOST3410_2012_512:
+            case "GOST3411_2012_512":
+            case "GOST3411_2012_256":
+                return createGOSTPublicKey();
+            default:
+                throw new RuntimeException("Unsupported keyType " + keyType);
         }
     }
 
@@ -115,6 +128,17 @@ public class JWKParser {
         }
     }
 
+    private PublicKey createGOSTPublicKey() {
+        try {
+            KeyFactory kf = KeyFactory.getInstance("GOST3410DHEL");
+            X509EncodedKeySpec x509 = new X509EncodedKeySpec(
+                Base64.getDecoder().decode(jwk.getOtherClaims().get(GOSTPublicJWK.PUBLIC_KEY).toString()));
+            return kf.generatePublic(x509);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PublicKey createRSAPublicKey() {
         BigInteger modulus = new BigInteger(1, Base64Url.decode(jwk.getOtherClaims().get(RSAPublicJWK.MODULUS).toString()));
         BigInteger publicExponent = new BigInteger(1, Base64Url.decode(jwk.getOtherClaims().get(RSAPublicJWK.PUBLIC_EXPONENT).toString()));
@@ -128,7 +152,12 @@ public class JWKParser {
     }
 
     public boolean isKeyTypeSupported(String keyType) {
-        return (RSAPublicJWK.RSA.equals(keyType) || ECPublicJWK.EC.equals(keyType));
+        return RSAPublicJWK.RSA.equals(keyType) ||
+               ECPublicJWK.EC.equals(keyType) ||
+               "GOST3411_2012_256".equals(keyType) ||
+               "GOST3411_2012_512".equals(keyType) ||
+               KeyType.GOST3411_2012_256withGOST3410_2012_256.equals(keyType) ||
+               KeyType.GOST3411_2012_512withGOST3410_2012_512.equals(keyType);
     }
 
 }

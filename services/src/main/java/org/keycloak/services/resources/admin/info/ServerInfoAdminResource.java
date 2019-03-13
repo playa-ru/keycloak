@@ -25,6 +25,8 @@ import org.keycloak.component.ComponentFactory;
 import org.keycloak.events.EventType;
 import org.keycloak.events.admin.OperationType;
 import org.keycloak.events.admin.ResourceType;
+import org.keycloak.gost.GOSTInstallationVerification;
+import org.keycloak.keys.ImportedGOSTKeyProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.ProtocolMapperModel;
 import org.keycloak.models.utils.ModelToRepresentation;
@@ -69,6 +71,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -122,6 +125,9 @@ public class ServerInfoAdminResource {
             spiRep.setInternal(spi.isInternal());
 
             List<String> providerIds = new LinkedList<>(session.listProviderIds(spi.getProviderClass()));
+
+            providerIds.removeIf(id ->
+                !GOSTInstallationVerification.verify() && id.equalsIgnoreCase(ImportedGOSTKeyProviderFactory.ID));
             Collections.sort(providerIds);
 
             Map<String, ProviderRepresentation> providers = new HashMap<>();

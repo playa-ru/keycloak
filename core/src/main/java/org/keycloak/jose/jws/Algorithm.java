@@ -17,6 +17,7 @@
 
 package org.keycloak.jose.jws;
 
+import org.keycloak.jose.jws.crypto.GOSTProvider;
 import org.keycloak.jose.jws.crypto.RSAProvider;
 import org.keycloak.jose.jws.crypto.SignatureProvider;
 
@@ -36,7 +37,10 @@ public enum Algorithm {
     RS512(AlgorithmType.RSA, new RSAProvider()),
     ES256(AlgorithmType.ECDSA, null),
     ES384(AlgorithmType.ECDSA, null),
-    ES512(AlgorithmType.ECDSA, null)
+    ES512(AlgorithmType.ECDSA, null),
+
+    GOST3411_2012_256withGOST3410_2012_256(AlgorithmType.GOST3411_2012_256withGOST3410_2012_256, new GOSTProvider()),
+    GOST3411_2012_512withGOST3410_2012_512(AlgorithmType.GOST3411_2012_512withGOST3410_2012_512, new GOSTProvider())
     ;
 
     private AlgorithmType type;

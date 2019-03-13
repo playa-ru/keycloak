@@ -22,6 +22,7 @@ import org.keycloak.component.ComponentModel;
 import org.keycloak.crypto.Algorithm;
 import org.keycloak.crypto.KeyUse;
 import org.keycloak.crypto.KeyWrapper;
+import org.keycloak.gost.GOSTInstallationVerification;
 import org.keycloak.models.KeyManager;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -257,6 +258,12 @@ public class DefaultKeyManager implements KeyManager {
                 try {
                     ProviderFactory<KeyProvider> f = session.getKeycloakSessionFactory().getProviderFactory(KeyProvider.class, c.getProviderId());
                     KeyProviderFactory factory = (KeyProviderFactory) f;
+
+                    logger.info(factory.getClass().getName());
+                    if (factory instanceof ImportedGOSTKeyProviderFactory && !GOSTInstallationVerification.verify()) {
+                        continue;
+                    }
+
                     KeyProvider provider = factory.create(session, c);
                     session.enlistForClose(provider);
                     providers.add(provider);

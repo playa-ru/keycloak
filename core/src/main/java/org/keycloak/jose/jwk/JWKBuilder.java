@@ -27,6 +27,7 @@ import java.security.Key;
 import java.security.PublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 
 /**
  * @author <a href="mailto:sthorger@redhat.com">Stian Thorgersen</a>
@@ -75,6 +76,19 @@ public class JWKBuilder {
         k.setPublicExponent(Base64Url.encode(toIntegerBytes(rsaKey.getPublicExponent())));
 
         return k;
+    }
+
+    public JWK gost(Key key) {
+        GOSTPublicJWK jwk = new GOSTPublicJWK();
+
+        jwk.setKeyId(this.kid != null ? this.kid : KeyUtils.createKeyId(key));
+        jwk.setKeyType(algorithm);
+        jwk.setAlgorithm(algorithm);
+        jwk.setPublicKeyUse(DEFAULT_PUBLIC_KEY_USE);
+
+        jwk.setPublicKey(Base64.getEncoder().encodeToString(key.getEncoded()));
+
+        return jwk;
     }
 
 

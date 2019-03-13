@@ -25,6 +25,7 @@ import org.keycloak.jose.jws.JWSHeader;
 import org.keycloak.jose.jws.JWSInput;
 import org.keycloak.jose.jws.JWSInputException;
 import org.keycloak.crypto.SignatureVerifierContext;
+import org.keycloak.jose.jws.crypto.GOSTProvider;
 import org.keycloak.jose.jws.crypto.HMACProvider;
 import org.keycloak.jose.jws.crypto.RSAProvider;
 import org.keycloak.representations.JsonWebToken;
@@ -446,6 +447,16 @@ public class TokenVerifier<T extends JsonWebToken> {
                     }
                     if (!HMACProvider.verify(jws, secretKey)) {
                         throw new TokenSignatureInvalidException(token, "Invalid token signature");
+                    }
+                    break;
+                case GOST3411_2012_256withGOST3410_2012_256:
+                case GOST3411_2012_512withGOST3410_2012_512:
+                    LOG.info("algorithm type: " + algorithmType);
+                    if (publicKey == null) {
+                        throw new IllegalArgumentException("Public key not set");
+                    }
+                    if (!GOSTProvider.verify(jws, publicKey)) {
+                        throw new IllegalArgumentException("Invalid token signature");
                     }
                     break;
                 default:
