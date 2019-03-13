@@ -111,7 +111,7 @@ public class GOSTKeyStore {
         key.setKid(getKid(publicKey));
         key.setUse(KeyUse.SIG);
         key.setType(KeyType.GOST);
-        key.setAlgorithm(GOSTAlgorithm.getDisplayName(algorithm));
+        key.setAlgorithm(algorithm);
         key.setStatus(status);
         key.setSignKey(getPrivateKey());
         key.setVerifyKey(publicKey);

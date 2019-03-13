@@ -16,7 +16,7 @@ public final class GOSTAlgorithm {
     /**
      * Дисплейное название алгоритма ГОСТ Р 34.10-2012 (256).
      */
-    public static final String GOST_SIGN_2012_256_DISPLAY_NAME = "GOST3411_2012_256";
+    public static final String GOST_SIGN_2012_256_DISPLAY_NAME = "GOST256";
 
     /**
      * Навазние алгоритма ГОСТ Р 34.10-2012 (256) в JCP.
@@ -26,7 +26,7 @@ public final class GOSTAlgorithm {
     /**
      * Дисплейное название алгоритма ГОСТ Р 34.10-2012 (512).
      */
-    public static final String GOST_SIGN_2012_512_DISPLAY_NAME = "GOST3411_2012_512";
+    public static final String GOST_SIGN_2012_512_DISPLAY_NAME = "GOST512";
 
     /**
      * Навазние алгоритма ГОСТ Р 34.10-2012 (512) в JCP.
