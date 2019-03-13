@@ -85,10 +85,7 @@ public class JWKParser {
                 return createRSAPublicKey();
             case KeyType.EC:
                 return createECPublicKey();
-            case KeyType.GOST3411_2012_256withGOST3410_2012_256:
-            case KeyType.GOST3411_2012_512withGOST3410_2012_512:
-            case "GOST3411_2012_512":
-            case "GOST3411_2012_256":
+            case KeyType.GOST:
                 return createGOSTPublicKey();
             default:
                 throw new RuntimeException("Unsupported keyType " + keyType);
@@ -154,10 +151,7 @@ public class JWKParser {
     public boolean isKeyTypeSupported(String keyType) {
         return RSAPublicJWK.RSA.equals(keyType) ||
                ECPublicJWK.EC.equals(keyType) ||
-               "GOST3411_2012_256".equals(keyType) ||
-               "GOST3411_2012_512".equals(keyType) ||
-               KeyType.GOST3411_2012_256withGOST3410_2012_256.equals(keyType) ||
-               KeyType.GOST3411_2012_512withGOST3410_2012_512.equals(keyType);
+               GOSTPublicJWK.GOST.equals(keyType);
     }
 
 }

@@ -1,5 +1,9 @@
 package org.keycloak.gost;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+
 /**
  * Статический класс, содержащий дисплейные и JCP названия алгоритмов шифрования.
  *
@@ -7,10 +11,12 @@ package org.keycloak.gost;
  */
 public final class GOSTAlgorithm {
 
+    public static final String GOST3410DHEL = "GOST3410DHEL";
+
     /**
      * Дисплейное название алгоритма ГОСТ Р 34.10-2012 (256).
      */
-    public static final String GOST_SIGN_2012_256_DISPLAY_NAME = "ГОСТ Р 34.10-2012 (256)";
+    public static final String GOST_SIGN_2012_256_DISPLAY_NAME = "GOST3411_2012_256";
 
     /**
      * Навазние алгоритма ГОСТ Р 34.10-2012 (256) в JCP.
@@ -20,7 +26,7 @@ public final class GOSTAlgorithm {
     /**
      * Дисплейное название алгоритма ГОСТ Р 34.10-2012 (512).
      */
-    public static final String GOST_SIGN_2012_512_DISPLAY_NAME = "ГОСТ Р 34.10-2012 (512)";
+    public static final String GOST_SIGN_2012_512_DISPLAY_NAME = "GOST3411_2012_512";
 
     /**
      * Навазние алгоритма ГОСТ Р 34.10-2012 (512) в JCP.
@@ -34,12 +40,17 @@ public final class GOSTAlgorithm {
 
     }
 
-    /**
-     * Получение по дисплейному названию алгоритма названия в JCP.
-     *
-     * @param displayName Дислейное название алгоритма.
-     * @return Название алгоритма в JCP.
-     */
+    public static String getDisplayName(final String algorithm) {
+        switch (algorithm) {
+            case GOST_SIGN_2012_256:
+                return GOST_SIGN_2012_256_DISPLAY_NAME;
+            case GOST_SIGN_2012_512:
+                return GOST_SIGN_2012_512_DISPLAY_NAME;
+            default:
+                return algorithm;
+        }
+    }
+
     public static String getAlgorithm(final String displayName) {
         switch (displayName) {
             case GOST_SIGN_2012_256_DISPLAY_NAME:
@@ -47,7 +58,19 @@ public final class GOSTAlgorithm {
             case GOST_SIGN_2012_512_DISPLAY_NAME:
                 return GOST_SIGN_2012_512;
             default:
-                throw new GOSTException("Algorithm not found: " + displayName);
+                return displayName;
         }
+    }
+
+    public static boolean jcpVerify() {
+        try {
+            Signature.getInstance(GOST_SIGN_2012_512);
+            Signature.getInstance(GOST_SIGN_2012_256);
+            KeyFactory.getInstance(GOST3410DHEL);
+        } catch (NoSuchAlgorithmException e) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -7,6 +7,7 @@ import java.security.Signature;
 import java.security.SignatureException;
 
 import org.keycloak.common.VerificationException;
+import org.keycloak.gost.GOSTAlgorithm;
 
 /**
  * Класс реализующий процесс проверки подписи.
@@ -36,13 +37,13 @@ public class GOSTSignatureVerifierContext implements SignatureVerifierContext {
 
     @Override
     public String getAlgorithm() {
-        return key.getAlgorithm();
+        return GOSTAlgorithm.getDisplayName(key.getAlgorithm());
     }
 
     @Override
     public boolean verify(byte[] data, byte[] signature) throws VerificationException {
         try {
-            Signature verifier = Signature.getInstance(key.getAlgorithm());
+            Signature verifier = Signature.getInstance(GOSTAlgorithm.getAlgorithm(key.getAlgorithm()));
             verifier.initVerify((PublicKey) key.getVerifyKey());
             verifier.update(data);
 

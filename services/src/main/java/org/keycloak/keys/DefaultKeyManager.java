@@ -22,7 +22,7 @@ import org.keycloak.component.ComponentModel;
 import org.keycloak.crypto.Algorithm;
 import org.keycloak.crypto.KeyUse;
 import org.keycloak.crypto.KeyWrapper;
-import org.keycloak.gost.GOSTInstallationVerification;
+import org.keycloak.gost.GOSTAlgorithm;
 import org.keycloak.models.KeyManager;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -82,7 +82,7 @@ public class DefaultKeyManager implements KeyManager {
 
     private KeyWrapper getActiveKey(List<KeyProvider> providers, RealmModel realm, KeyUse use, String algorithm) {
         for (KeyProvider p : providers) {
-            for (KeyWrapper key : p .getKeys()) {
+            for (KeyWrapper key : p.getKeys()) {
                 if (key.getStatus().isActive() && matches(key, use, algorithm)) {
                     if (logger.isTraceEnabled()) {
                         logger.tracev("Active key found: realm={0} kid={1} algorithm={2} use={3}", realm.getName(), key.getKid(), algorithm, use.name());
@@ -243,7 +243,7 @@ public class DefaultKeyManager implements KeyManager {
     }
 
     private boolean matches(KeyWrapper key, KeyUse use, String algorithm) {
-        return use.equals(key.getUse()) && key.getAlgorithm().equals(algorithm);
+        return use.equals(key.getUse()) && key.getAlgorithm().equalsIgnoreCase(GOSTAlgorithm.getDisplayName(algorithm));
     }
 
     private List<KeyProvider> getProviders(RealmModel realm) {
@@ -259,8 +259,7 @@ public class DefaultKeyManager implements KeyManager {
                     ProviderFactory<KeyProvider> f = session.getKeycloakSessionFactory().getProviderFactory(KeyProvider.class, c.getProviderId());
                     KeyProviderFactory factory = (KeyProviderFactory) f;
 
-                    logger.info(factory.getClass().getName());
-                    if (factory instanceof ImportedGOSTKeyProviderFactory && !GOSTInstallationVerification.verify()) {
+                    if (factory instanceof ImportedGOSTKeyProviderFactory && !GOSTAlgorithm.jcpVerify()) {
                         continue;
                     }
 

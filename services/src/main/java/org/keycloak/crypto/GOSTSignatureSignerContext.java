@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Signature;
 
+import org.keycloak.gost.GOSTAlgorithm;
+
 /**
  * Класс реализующий процесс подписания.
  *
@@ -33,18 +35,18 @@ public class GOSTSignatureSignerContext implements SignatureSignerContext {
 
     @Override
     public String getAlgorithm() {
-        return key.getAlgorithm();
+        return GOSTAlgorithm.getDisplayName(key.getAlgorithm());
     }
 
     @Override
     public String getHashAlgorithm() {
-        return key.getAlgorithm();
+        return GOSTAlgorithm.getDisplayName(key.getAlgorithm());
     }
 
     @Override
     public byte[] sign(byte[] data) throws SignatureException {
         try {
-            Signature signature = Signature.getInstance(key.getAlgorithm());
+            Signature signature = Signature.getInstance(GOSTAlgorithm.getAlgorithm(key.getAlgorithm()));
             signature.initSign((PrivateKey) key.getSignKey());
             signature.update(data);
 

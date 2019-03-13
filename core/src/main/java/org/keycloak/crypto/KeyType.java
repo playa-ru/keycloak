@@ -21,7 +21,5 @@ public interface KeyType {
     String EC = "EC";
     String RSA = "RSA";
     String OCT = "OCT";
-
-    String GOST3411_2012_256withGOST3410_2012_256 = "GOST3411_2012_256withGOST3410_2012_256";
-    String GOST3411_2012_512withGOST3410_2012_512 = "GOST3411_2012_512withGOST3410_2012_512";
+    String GOST = "GOST";
 }

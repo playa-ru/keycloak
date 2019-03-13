@@ -13,12 +13,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
-import org.jboss.logging.Logger;
 import org.keycloak.common.util.Base64Url;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.crypto.KeyStatus;
@@ -36,8 +31,6 @@ import org.keycloak.keys.Attributes;
  * @author Anatoliy Pokhresnyi
  */
 public class GOSTKeyStore {
-
-    protected static final Logger LOGGER = Logger.getLogger(GOSTKeyStore.class);
 
     /**
      * ID KeyStore.
@@ -86,7 +79,7 @@ public class GOSTKeyStore {
             this.keyStore = KeyStore.getInstance(model.get(GOSTAttribute.KEYSTORE_KEY, ""));
             this.status = KeyStatus.from(model.get(Attributes.ACTIVE_KEY, true),
                                          model.get(Attributes.ENABLED_KEY, true));
-            this.algorithm = GOSTAlgorithm.getAlgorithm(model.get(GOSTAttribute.ALGORITHM_KEY, ""));
+            this.algorithm = GOSTAlgorithm.getDisplayName(model.get(GOSTAttribute.ALGORITHM_KEY, ""));
             this.alias = model.get(GOSTAttribute.KEY_ALIAS_KEY, "");
             this.password = model.get(GOSTAttribute.KEYSTORE_PASSWORD_KEY, "")
                                  .toCharArray();
@@ -103,12 +96,6 @@ public class GOSTKeyStore {
      * @return Ключ.
      */
     public KeyWrapper key() {
-        try {
-            LOGGER.info("aliases: " + String.join(" ", Collections.list(keyStore.aliases())));
-        } catch (KeyStoreException e) {
-            throw new GOSTException("Get aliases exception. " + e.getMessage(), e);
-        }
-
         X509Certificate certificate = getX509Certificate();
 
         if (certificate == null) {
@@ -123,8 +110,8 @@ public class GOSTKeyStore {
         key.setProviderPriority(priority);
         key.setKid(getKid(publicKey));
         key.setUse(KeyUse.SIG);
-        key.setType(algorithm);
-        key.setAlgorithm(algorithm);
+        key.setType(KeyType.GOST);
+        key.setAlgorithm(GOSTAlgorithm.getDisplayName(algorithm));
         key.setStatus(status);
         key.setSignKey(getPrivateKey());
         key.setVerifyKey(publicKey);

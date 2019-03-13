@@ -208,10 +208,7 @@ public class OIDCLoginProtocolService {
                     case KeyType.EC:
                         keys.add(b.ec(k.getVerifyKey()));
                         break;
-                    case "GOST3411_2012_256":
-                    case "GOST3411_2012_512":
-                    case KeyType.GOST3411_2012_256withGOST3410_2012_256:
-                    case KeyType.GOST3411_2012_512withGOST3410_2012_512:
+                    case KeyType.GOST:
                         keys.add(b.gost(k.getVerifyKey()));
                         break;
                 }
