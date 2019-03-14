@@ -155,10 +155,10 @@
         </repository>
     </distributionManagement>
 
-    <scm>
-        <url>scm:git:git@github.com:playa-ru/keycloak.git</url>
-        <developerConnection>scm:git:git@github.com:playa-ru/keycloak.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+    <!--<scm>-->
+        <!--<url>scm:git:git@github.com:playa-ru/keycloak.git</url>-->
+        <!--<developerConnection>scm:git:git@github.com:playa-ru/keycloak.git</developerConnection>-->
+        <!--<tag>HEAD</tag>-->
+    <!--</scm>-->
 
 </project>
