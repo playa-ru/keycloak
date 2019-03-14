@@ -140,17 +140,9 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${release.plugin.version}</version>
                 <configuration>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <preparationGoals>clean</preparationGoals>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>1.9.5</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
