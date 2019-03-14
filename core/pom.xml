@@ -30,7 +30,7 @@
     <artifactId>keycloak-core</artifactId>
     <name>Keycloak Core</name>
     <packaging>jar</packaging>
-    <version>4.8.3.GOST</version>
+    <version>4.8.3.GOST-SNAPSHOT</version>
     <description/>
 
     <properties>
