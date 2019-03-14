@@ -7,7 +7,7 @@ public class GOST256ClientSignatureVerifierProviderFactory implements ClientSign
 
     @Override
     public String getId() {
-        return GOSTAlgorithm.GOST_SIGN_2012_256;
+        return GOSTAlgorithm.GOST_SIGN_2012_256_DISPLAY_NAME;
     }
 
     @Override
