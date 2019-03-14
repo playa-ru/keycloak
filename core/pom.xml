@@ -29,7 +29,7 @@
     <artifactId>keycloak-core</artifactId>
     <name>Keycloak Core</name>
     <packaging>jar</packaging>
-    <version>4.8.3.GOST</version>
+    <version>4.8.4.GOST-SNAPSHOT</version>
     <description />
 
     <properties>
@@ -165,7 +165,7 @@
     <scm>
         <url>scm:git:git@github.com:playa-ru/keycloak.git</url>
         <developerConnection>scm:git:git@github.com:playa-ru/keycloak.git</developerConnection>
-        <tag>v4.8.3.GOST</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
