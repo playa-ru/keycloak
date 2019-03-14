@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--<parent>-->
         <!--<artifactId>keycloak-parent</artifactId>-->
         <!--<groupId>org.keycloak</groupId>-->
@@ -29,8 +30,8 @@
     <artifactId>keycloak-core</artifactId>
     <name>Keycloak Core</name>
     <packaging>jar</packaging>
-    <version>4.8.3.GOST</version>
-    <description />
+    <version>4.8.3.GOST-SNAPSHOT</version>
+    <description/>
 
     <properties>
         <keycloak.common.version>4.8.3.Final</keycloak.common.version>
@@ -165,7 +166,7 @@
     <scm>
         <url>scm:git:git@github.com:playa-ru/keycloak.git</url>
         <developerConnection>scm:git:git@github.com:playa-ru/keycloak.git</developerConnection>
-        <tag>v4.8.3.GOST</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
