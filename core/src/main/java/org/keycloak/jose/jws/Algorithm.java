@@ -39,8 +39,8 @@ public enum Algorithm {
     ES384(AlgorithmType.ECDSA, null),
     ES512(AlgorithmType.ECDSA, null),
 
-    GOST3411_2012_256withGOST3410_2012_256(AlgorithmType.GOST3411_2012_256withGOST3410_2012_256, new GOSTProvider()),
-    GOST3411_2012_512withGOST3410_2012_512(AlgorithmType.GOST3411_2012_512withGOST3410_2012_512, new GOSTProvider())
+    GOST256(AlgorithmType.GOST256, new GOSTProvider()),
+    GOST512(AlgorithmType.GOST512, new GOSTProvider())
     ;
 
     private AlgorithmType type;

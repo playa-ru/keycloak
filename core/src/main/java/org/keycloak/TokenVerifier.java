@@ -449,8 +449,8 @@ public class TokenVerifier<T extends JsonWebToken> {
                         throw new TokenSignatureInvalidException(token, "Invalid token signature");
                     }
                     break;
-                case GOST3411_2012_256withGOST3410_2012_256:
-                case GOST3411_2012_512withGOST3410_2012_512:
+                case GOST256:
+                case GOST512:
                     LOG.info("algorithm type: " + algorithmType);
                     if (publicKey == null) {
                         throw new IllegalArgumentException("Public key not set");

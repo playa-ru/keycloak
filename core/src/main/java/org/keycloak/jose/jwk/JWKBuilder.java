@@ -82,10 +82,9 @@ public class JWKBuilder {
         GOSTPublicJWK jwk = new GOSTPublicJWK();
 
         jwk.setKeyId(this.kid != null ? this.kid : KeyUtils.createKeyId(key));
-        jwk.setKeyType(algorithm);
+        jwk.setKeyType(KeyType.GOST);
         jwk.setAlgorithm(algorithm);
         jwk.setPublicKeyUse(DEFAULT_PUBLIC_KEY_USE);
-
         jwk.setPublicKey(Base64.getEncoder().encodeToString(key.getEncoded()));
 
         return jwk;

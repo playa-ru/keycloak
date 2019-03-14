@@ -17,6 +17,24 @@
 
 package org.keycloak.protocol.oidc;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.OPTIONS;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
@@ -44,22 +62,6 @@ import org.keycloak.services.resources.Cors;
 import org.keycloak.services.resources.RealmsResource;
 import org.keycloak.services.util.CacheControlUtil;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.OPTIONS;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Resource class for the oauth/openid connect token service
  *
@@ -67,6 +69,8 @@ import java.util.List;
  * @version $Revision: 1 $
  */
 public class OIDCLoginProtocolService {
+
+    private static final Logger LOG = Logger.getLogger(OIDCLoginProtocolService.class.getName());
 
     private RealmModel realm;
     private TokenManager tokenManager;
@@ -209,7 +213,13 @@ public class OIDCLoginProtocolService {
                         keys.add(b.ec(k.getVerifyKey()));
                         break;
                     case KeyType.GOST:
+                    case "GOST256":
+                    case "GOST512":
+                        LOG.info("GOST KeyType: " + k.getType() + ", KID: " + k.getKid());
                         keys.add(b.gost(k.getVerifyKey()));
+                        break;
+                    default:
+                        LOG.info("Default KeyType: " + k.getType() + ", KID: " + k.getKid());
                         break;
                 }
             }

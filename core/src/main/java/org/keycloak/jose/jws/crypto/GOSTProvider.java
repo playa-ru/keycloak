@@ -17,9 +17,9 @@ public class GOSTProvider implements SignatureProvider {
 
     public static String getGOSTAlgorithm(Algorithm alg) {
         switch (alg) {
-            case GOST3411_2012_512withGOST3410_2012_512:
+            case GOST512:
                 return "GOST3411_2012_512withGOST3410_2012_512";
-            case GOST3411_2012_256withGOST3410_2012_256:
+            case GOST256:
                 return "GOST3411_2012_256withGOST3410_2012_256";
             default:
                 throw new IllegalArgumentException("Not an GOST Algorithm");
